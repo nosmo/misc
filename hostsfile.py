@@ -98,6 +98,14 @@ class HostsFile(object):
         else:
             return False
 
+    #TODO __setitem__
+    def __getitem__(self, ipaddress):
+        self.hosts_data = self.__load_data()
+        for line in self.hosts_data:
+            if len(line) > 1 and line[1] == ipaddress:
+                return line
+        return None
+
     def __bool__(self):
         return self.__nonzero__()
 
