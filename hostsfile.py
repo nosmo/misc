@@ -1,10 +1,25 @@
 #!/usr/bin/env python
 
+"""Somewhat pythonic interface to the tcpwrappers hosts.deny and
+hosts.allow format.
+
+  HostsFile is a generic class for hosts files with an arbitrary
+ location. HostsDeny and HostsAllow simply point to the standard
+ locations.
+
+"""
+
 import os
 
 class HostsFile(object):
 
     def __init__(self, path, buffer_writes=0):
+        """Access a hosts file
+
+        Keyword arguments:
+        path -- string path to the hosts file to use.
+        buffer_writes -- the number of writes to buffer for writing.
+        """
 
         self.filepath = path
         self.hosts_data = None
@@ -16,6 +31,7 @@ class HostsFile(object):
             self.buffer = None
 
     def __load_data(self):
+        """Load data from the hosts file"""
         linedata = []
         with open(self.filepath, "r") as fileobj:
             for line in fileobj.read().split("\n"):
@@ -32,6 +48,7 @@ class HostsFile(object):
 
     @staticmethod
     def __render_entry(linesplit):
+        """Render a tuple representing a hostsfile entry"""
         commentstr = ""
 
         if linesplit[2] and not linesplit[2].startswith("#"):
@@ -46,6 +63,14 @@ class HostsFile(object):
             )
 
     def add(self, ipaddress, bantype="ALL", comment=None):
+        """Add to a hosts file.
+
+        Keyword arguments:
+        ipaddress -- ip address tring
+        bantype -- the service used to classify the ban. Defaults to ALL.
+        comment -- the comment to append with a #
+        """
+
         self.hosts_data = self.__load_data()
         bantype = "%s:" % bantype
         lineentry = self.__render_entry([bantype, ipaddress, comment])
@@ -84,6 +109,11 @@ class HostsFile(object):
         return self
 
     def __add__(self, ipaddress):
+        """Add an IP address to the hosts file using ALL: as the type.
+
+        Keyword arguments:
+        ipaddress -- the ipaddress to add.
+        """
         self.hosts_data = self.__load_data()
         comment = None
         bantype = "%s:" % "ALL"
@@ -100,6 +130,12 @@ class HostsFile(object):
         return self
 
     def __sub__(self, ipaddress):
+        """Remove an IP address from the hosts file
+
+        Keyword arguments:
+        ipaddress -- the IP address to remove.
+        """
+
         out_data = []
         self.hosts_data = self.__load_data()
         for line in self.hosts_data:
@@ -115,6 +151,12 @@ class HostsFile(object):
         return self
 
     def __contains__(self, ipaddress):
+        """Check whether an IP address is in the hosts file.
+
+        Keyword arguments:
+        ipaddress -- the IP address to look for
+        """
+
         self.hosts_data = self.__load_data()
         for line in self.hosts_data:
             if len(line) > 1 and line[1] == ipaddress:
@@ -122,6 +164,7 @@ class HostsFile(object):
         return False
 
     def __len__(self):
+        """Return the length of the hosts file. """
         num_lines = 0
         self.hosts_data = self.__load_data()
         for line in self.hosts_data:
@@ -130,11 +173,13 @@ class HostsFile(object):
         return num_lines
 
     def __iter__(self):
+        """Iterate over the entries in the hosts file"""
         self.hosts_data = self.__load_data()
         for line in self.hosts_data:
             yield line
 
     def __nonzero__(self):
+        """Is the hostsfile populated"""
         if self.__len__() > 0:
             return True
         else:
@@ -142,6 +187,7 @@ class HostsFile(object):
 
     #TODO __setitem__
     def __getitem__(self, ipaddress):
+        """Return the entry for a particular IP address"""
         self.hosts_data = self.__load_data()
         for line in self.hosts_data:
             if len(line) > 1 and line[1] == ipaddress:
@@ -154,12 +200,14 @@ class HostsFile(object):
 class HostsDeny(HostsFile):
 
     def __init__(self, buffer_writes=0):
+        """Create a hosts file object for hosts.deny"""
         HostsFile.__init__(self, "/etc/hosts.deny",
                            buffer_writes=buffer_writes)
 
 class HostsAllow(HostsFile):
 
     def __init__(self, buffer_writes=0):
+        """Create a hosts file object for hosts.allow"""
         HostsFile.__init__(self, "/etc/hosts.allow",
                            buffer_writes=buffer_writes)
 
