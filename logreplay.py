@@ -5,7 +5,12 @@ import datetime
 import time
 import logging
 
-# Replay an apache log file in "real" time
+"""Replay an apache log file in 'real' time
+
+ Writes a logfile at the speed at which it originally came in. Useful
+for testing log-based analysis tools against notable events.
+
+"""
 
 DATE_RE = re.compile("\d{2}/\w{3}/\d{4}:\d{2}:\d{2}:\d{2}")
 DATE_STR = "%d/%b/%Y:%H:%M:%S"
