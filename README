@@ -2,3 +2,7 @@ Miscellaneous scripts
 
 train.py - a script for getting Irish Rail timetables based on source and destination
 anonymize_iplog.py - anonymise a log with leading IP addresses by randomising a number of octets
+randword.py - return a random word from the system dictionary
+logreplay.py - simulate replay of an apache-style log file
+hostsfile.py - pythonic interface to tcpwrappers hosts files
+things_work_area.applescript - hide ("suspend") a Things area, used to hide time-specific tasks.
