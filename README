@@ -1,3 +1,4 @@
 Miscellaneous scripts
 
 train.py - a script for getting Irish Rail timetables based on source and destination
+anonymize_iplog.py - anonymise a log with leading IP addresses by randomising a number of octets
