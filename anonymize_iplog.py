@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python
 
 import argparse
 import os
@@ -20,8 +20,10 @@ def cleanLog(inlog, outlog):
     lines_out = []
 
     with open(inlog, "r") as log_file:
-        for line in log_file.read().strip().split("\n"):
+        for line in log_file:
             line = line.strip()
+            if not line:
+                continue
             line_ip = None
             rest_of_line = line
             if ip_regex.match(line):
