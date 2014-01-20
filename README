@@ -6,3 +6,4 @@ randword.py - return a random word from the system dictionary
 logreplay.py - simulate replay of an apache-style log file
 hostsfile.py - pythonic interface to tcpwrappers hosts files
 things_work_area.applescript - hide ("suspend") a Things area, used to hide time-specific tasks.
+sum.py - dumb number summing script
