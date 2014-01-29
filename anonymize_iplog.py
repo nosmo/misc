@@ -2,6 +2,7 @@
 
 import argparse
 import os
+import gzip
 import random
 import re
 
@@ -19,7 +20,11 @@ def cleanLog(inlog, outlog):
     ip_map = {}
     lines_out = []
 
-    with open(inlog, "r") as log_file:
+    _open= open
+    if inlog.endswith(".gz"):
+        _open = gzip.open
+
+    with _open(inlog, "r") as log_file:
         for line in log_file:
             line = line.strip()
             if not line:
