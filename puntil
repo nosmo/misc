@@ -1,0 +1,11 @@
+#!/bin/bash
+
+# Ping a host until the command succeeds.
+# Useful for things like "puntil host.example.com; ssh host.example.com"
+
+PING_FAILED=1
+
+while [ $PING_FAILED -ne 0 ]; do
+      ping -c1 $1
+      PING_FAILED=$?
+done

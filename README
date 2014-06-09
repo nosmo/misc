@@ -7,3 +7,4 @@ logreplay.py - simulate replay of an apache-style log file
 hostsfile.py - pythonic interface to tcpwrappers hosts files
 things_work_area.applescript - hide ("suspend") a Things area, used to hide time-specific tasks.
 sum.py - dumb number summing script
+puntil - ping something until successful. Useful for running commands when something comes back up
